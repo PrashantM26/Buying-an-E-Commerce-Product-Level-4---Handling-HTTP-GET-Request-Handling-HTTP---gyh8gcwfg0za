@@ -14,7 +14,35 @@ app.use(express.json());
 
 // Write PATCH endpoint to buy a product for the client here
 // Endpoint /api/v1/products/:id
-
+app.patch('/api/v1/products/:id', (req, res) => {
+    const productId = req.params.id;
+    
+    const product = products.find((product) => product.id === productId);
+    
+    if(!product){
+        res.status(404).json({
+            status : "failed",
+            message : "Product not found!"
+        })
+    }
+    else if(product.quantity == 0){
+        res.status(404).json({
+            status : "success",
+            message : "${product.name}, Out of stock!"
+        })
+    }
+    else {
+        product.quantity--;
+    
+        fs.writeFileSync(`${__dirname}/data/products.json`, JSON.stringify(products));
+    
+        res.status(200).json({
+            status: 'success',
+            message: `Thank you for purchasing ${product.name}`,
+            product
+        });
+    }
+});
 
 
 
