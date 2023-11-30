@@ -15,7 +15,7 @@ app.use(express.json());
 // Write PATCH endpoint to buy a product for the client here
 // Endpoint /api/v1/products/:id
 app.patch('/api/v1/products/:id', (req, res) => {
-    const productId = req.params.id;
+    const productId = parseInt(req.params.id);
     
     const product = products.find((product) => product.id === productId);
     
